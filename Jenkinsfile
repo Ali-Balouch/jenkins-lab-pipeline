@@ -5,11 +5,7 @@ pipeline {
     environment {
         APP_ENV = 'development'
         BUILD_INFO = "Build-${env.BUILD_NUMBER}"
-    }
-
-    // Tools section to automatically use Maven
-    tools {
-        maven 'Maven-3.8.8'
+        MAVEN_HOME = "C:/Program Files/Apache/Maven/bin" // Update to your Maven installation path
     }
 
     stages {
@@ -24,19 +20,20 @@ pipeline {
             steps {
                 echo "Building in environment: ${env.APP_ENV}"
                 echo "Build info: ${env.BUILD_INFO}"
-                sh 'mvn -B -DskipTests package'
+                // Use system-installed Maven directly
+                bat "\"${env.MAVEN_HOME}/mvn\" -B -DskipTests package"
             }
         }
 
         stage('Test') {
-            // Run tests only if Build succeeded
+            // Only run tests if Build succeeded
             when {
                 expression { currentBuild.currentResult == 'SUCCESS' }
             }
             steps {
                 echo "Running tests in environment: ${env.APP_ENV}"
                 echo "Build info: ${env.BUILD_INFO}"
-                sh 'mvn test'
+                bat "\"${env.MAVEN_HOME}/mvn\" test"
             }
         }
 
@@ -48,8 +45,7 @@ pipeline {
             steps {
                 echo "Deploying in environment: ${env.APP_ENV}"
                 echo "Build info: ${env.BUILD_INFO}"
-                // Example deploy command
-                sh 'bash deploy.sh'
+                bat "bash deploy.sh"
             }
         }
     }
