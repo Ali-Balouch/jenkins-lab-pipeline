@@ -24,3 +24,15 @@ pipeline {
         }
     }
 }
+post {
+    always {
+        echo "This will always run."
+    }
+    success {
+        echo "Build succeeded."
+    }
+    failure {
+        echo "Build failed."
+    }
+}
+
