@@ -22,17 +22,18 @@ pipeline {
                 // e.g. sh 'bash deploy.sh'
             }
         }
+        post {
+            always {
+                echo "This will always run."
+            }
+            success {
+                echo "Build succeeded."
+            }
+            failure {
+                echo "Build failed."
+            }
+        }
     }
 }
-post {
-    always {
-        echo "This will always run."
-    }
-    success {
-        echo "Build succeeded."
-    }
-    failure {
-        echo "Build failed."
-    }
-}
+
 
