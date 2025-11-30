@@ -1,10 +1,17 @@
 pipeline {
     agent any
 
+    // Environment variables available throughout the pipeline
+    environment {
+        APP_ENV = 'development'
+        BUILD_INFO = "Build-${env.BUILD_NUMBER}"
+    }
+
     stages {
         stage('Build') {
             steps {
-                echo 'Building...'
+                echo "Building in environment: ${env.APP_ENV}"
+                echo "Build info: ${env.BUILD_INFO}"
                 // Example build command:
                 // sh 'mvn -B -DskipTests package'
             }
@@ -18,7 +25,8 @@ pipeline {
                 }
             }
             steps {
-                echo 'Running Tests...'
+                echo "Running Tests in environment: ${env.APP_ENV}"
+                echo "Build info: ${env.BUILD_INFO}"
                 // Example test command:
                 // sh 'mvn test'
             }
@@ -32,7 +40,8 @@ pipeline {
                 }
             }
             steps {
-                echo 'Deploying...'
+                echo "Deploying in environment: ${env.APP_ENV}"
+                echo "Build info: ${env.BUILD_INFO}"
                 // Example deploy command:
                 // sh 'bash deploy.sh'
             }
@@ -41,13 +50,13 @@ pipeline {
 
     post {
         always {
-            echo "This will always run."
+            echo "Pipeline execution completed. Environment: ${env.APP_ENV}, ${env.BUILD_INFO}"
         }
         success {
-            echo "Build succeeded."
+            echo "Build succeeded. ${env.BUILD_INFO}"
         }
         failure {
-            echo "Build failed."
+            echo "Build failed. ${env.BUILD_INFO}"
         }
     }
 }
