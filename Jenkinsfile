@@ -22,7 +22,8 @@ pipeline {
                 // e.g. sh 'bash deploy.sh'
             }
         }
-        post {
+    }
+    post {
             always {
                 echo "This will always run."
             }
@@ -33,7 +34,6 @@ pipeline {
                 echo "Build failed."
             }
         }
-    }
 }
 
 
